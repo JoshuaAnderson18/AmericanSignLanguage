@@ -83,6 +83,9 @@ def main():
 
         cv.imshow('Hand Gesture Recognition', debug_image)
 
+    cap.release()
+    cv.destroyAllWindows()
+
 
 if __name__ == '__main__':
     main()
