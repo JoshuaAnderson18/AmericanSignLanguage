@@ -21,6 +21,13 @@ def main():
     cap.set(cv.CAP_PROP_FRAME_WIDTH, cap_width)
     cap.set(cv.CAP_PROP_FRAME_HEIGHT, cap_height)
 
+    mp_drawing = mp.solutions.drawing_utils
+    mp_face = mp.solutions.face_detection
+    face = mp_face.FaceDetection(
+        model_selection=0,
+        min_detection_confidence=min_detection_confidence
+    )
+
     mp_hands = mp.solutions.hands
     hands = mp_hands.Hands(
         static_image_mode=use_static_image_mode,
@@ -52,11 +59,16 @@ def main():
         image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
 
         image.flags.writeable = False
-        results = hands.process(image)
+        results_hands = hands.process(image)
+        results_face = face.process(image)
         image.flags.writeable = True
 
-        if results.multi_hand_landmarks is not None:
-            for hand_landmarks, handedness in zip(results.multi_hand_landmarks, results.multi_handedness):
+        if results_face.detections:
+            for detection in results_face.detections:
+                mp_drawing.draw_detection(debug_image, detection)
+
+        if results_hands.multi_hand_landmarks is not None:
+            for hand_landmarks, handedness in zip(results_hands.multi_hand_landmarks, results_hands.multi_handedness):
                 landmark_list = calc_landmark_list(debug_image, hand_landmarks)
                 pre_processed_landmark_list = pre_process_landmark(landmark_list)
 
@@ -70,9 +82,6 @@ def main():
                     keypoint_classifier_labels[hand_sign_id])
 
         cv.imshow('Hand Gesture Recognition', debug_image)
-
-    cap.release()
-    cv.destroyAllWindows()
 
 
 if __name__ == '__main__':
