@@ -1,3 +1,9 @@
+# Author Names: Joshua Anderson, Becca Casad, Charlie Cathcart, Ahn Nguyen
+# Description: Creates a video feed that interprets ASL into text on screen.
+#
+# Credits:  Bimal-Tech (https://github.com/bimal-tech/AmericanSignLanguage) - Code used for main part of project
+#           MediaPipe Facial Detection - https://google.github.io/mediapipe/solutions/face_detection.html
+
 import csv
 import copy
 import cv2 as cv
@@ -5,7 +11,7 @@ import mediapipe as mp
 from model import KeyPointClassifier
 from app_files import calc_landmark_list, draw_info_text, draw_landmarks, get_args, pre_process_landmark
 
-
+# Main - Creates camera output with hand and face detection. (Will be split later)
 def main():
     args = get_args()
 
@@ -86,6 +92,6 @@ def main():
     cap.release()
     cv.destroyAllWindows()
 
-
+# Calling Main
 if __name__ == '__main__':
     main()
