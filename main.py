@@ -64,15 +64,18 @@ def main():
         # cv.imshow("debug_image",debug_image)
         image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
 
+        # Processes image to detect face and hands.
         image.flags.writeable = False
         results_hands = hands.process(image)
         results_face = face.process(image)
         image.flags.writeable = True
 
+        # Determines if face needs to be drawn.
         if results_face.detections:
             for detection in results_face.detections:
                 mp_drawing.draw_detection(debug_image, detection)
 
+        # Determines if hand needs to be drawn.
         if results_hands.multi_hand_landmarks is not None:
             for hand_landmarks, handedness in zip(results_hands.multi_hand_landmarks, results_hands.multi_handedness):
                 landmark_list = calc_landmark_list(debug_image, hand_landmarks)

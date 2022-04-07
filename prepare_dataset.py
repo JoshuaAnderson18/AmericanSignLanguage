@@ -1,3 +1,8 @@
+# Author Names: Joshua Anderson, Becca Casad, Charlie Cathcart, Ahn Nguyen
+# Description:
+#
+# Credits:  Bimal-Tech (https://github.com/bimal-tech/AmericanSignLanguage) - Code used for main part of project
+
 import copy
 import cv2 as cv
 import mediapipe as mp
@@ -32,16 +37,16 @@ def main():
         key = cv.waitKey(10)
         if key == 27:  # ESC
             break
-        
+
         if 48 <= key <= 57:  # 0 ~ 9
             number = key - 48
-            
+
         ret, image = cap.read()
 
         if not ret:
             break
         image = cv.flip(image, 1)
-        debug_image = copy.deepcopy(image)        
+        debug_image = copy.deepcopy(image)
         image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
         image.flags.writeable = False
         results = hands.process(image)
@@ -51,7 +56,7 @@ def main():
         # print(results)
 
         if results.multi_hand_landmarks is not None:
-            for hand_landmarks in results.multi_hand_landmarks :                               
+            for hand_landmarks in results.multi_hand_landmarks :
                 landmark_list = calc_landmark_list(debug_image, hand_landmarks)
                 pre_processed_landmark_list = pre_process_landmark(landmark_list)
                 logging_csv(number, mode, pre_processed_landmark_list)
