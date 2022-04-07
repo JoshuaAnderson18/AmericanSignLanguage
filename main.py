@@ -23,10 +23,12 @@ def main():
     min_detection_confidence = args.min_detection_confidence
     min_tracking_confidence = args.min_tracking_confidence
 
+    # Imports Capture Device (Camera)
     cap = cv.VideoCapture(cap_device)
     cap.set(cv.CAP_PROP_FRAME_WIDTH, cap_width)
     cap.set(cv.CAP_PROP_FRAME_HEIGHT, cap_height)
 
+    # Imports Hand Detection
     mp_drawing = mp.solutions.drawing_utils
     mp_face = mp.solutions.face_detection
     face = mp_face.FaceDetection(
@@ -34,6 +36,7 @@ def main():
         min_detection_confidence=min_detection_confidence
     )
 
+    # Imports Hand Detection
     mp_hands = mp.solutions.hands
     hands = mp_hands.Hands(
         static_image_mode=use_static_image_mode,
@@ -44,6 +47,7 @@ def main():
 
     keypoint_classifier = KeyPointClassifier()
 
+    # Opens Keypoint Classifier Labels
     with open('model/keypoint_classifier/keypoint_classifier_label.csv', encoding='utf-8-sig') as f:
         keypoint_classifier_labels = csv.reader(f)
         keypoint_classifier_labels = [
